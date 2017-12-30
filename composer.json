@@ -14,7 +14,10 @@
   ],
   "require": {
       "php": ">=5.3.2",
-      "friendsofsymfony/rest-bundle": "^2.1"
+      "friendsofsymfony/rest-bundle": "^2.1",
+      "friendsofsymfony/jsrouting-bundle": "^1.6",
+      "jms/serializer-bundle": "^1.1",
+      "pagerfanta/pagerfanta": "v1.0.5"
   },
   "autoload": {
       "psr-4": { "Atechnologies\\PaginatorBundle\\": "" }
