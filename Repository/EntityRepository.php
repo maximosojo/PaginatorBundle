@@ -141,9 +141,14 @@ class EntityRepository extends Base implements ContainerAwareInterface
         return $this->container->get('security.context');
     }
     
+    /**
+     * Carga de formato de respuesta
+     * @author Máximo Sojo maxsojo13@gmail.com <maxtoan at atechnologies>
+     * @return [type]
+     */
     public function getFormatPaginator()
     {
-        return Paginator::FORMAT_ARRAY_DEFAULT;
+        return $this->container->getParameter('format_array');
     }
     
     public function findForSearch(array $criteria = [], array $orderBy = null)

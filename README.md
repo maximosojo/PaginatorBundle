@@ -7,10 +7,11 @@ Esta versión del paquete requiere Symfony 2.1+. y 3.+
 
 ## Instalación
 
-La instalación es rápida y sencilla, a sólo 2 pasos:
+La instalación es rápida y sencilla:
 
 1. Descarga AtechnologiesPaginatorBundle via composer
 2. Habilitar el paquete
+3. Configuración
 
 ### Paso 1: Descargar usando composer
 
@@ -45,4 +46,15 @@ public function registerBundles()
         new Atechnologies\PaginatorBundle\AtechnologiesPaginatorBundle(),
     );
 }
+```
+
+### Paso 3: Configuración de bundle
+
+Configurar en caso de requerir otro retorno diferente al por defecto:
+
+``` yaml
+// app/config/config.yml
+
+atechnologies_paginator:
+    format_array: standard #default, standard ó dataTables
 ```

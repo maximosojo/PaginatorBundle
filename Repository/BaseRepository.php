@@ -80,11 +80,6 @@ class BaseRepository extends EntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getFormatPaginator()
-    {
-        return Paginator::FORMAT_ARRAY_STANDARD;
-    }
-
     /**
      * 
      * @param array $criteria
