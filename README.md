@@ -42,7 +42,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Atechnologies\ToolsBundle\AtechnologiesPaginatorBundle(),
+        new Atechnologies\PaginatorBundle\AtechnologiesPaginatorBundle(),
     );
 }
 ```

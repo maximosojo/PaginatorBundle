@@ -1,0 +1,173 @@
+{% macro input(type = null,parameters = {}) %}
+    {% set class = 'form-control' %}
+    {% set type = 'text' %}
+
+    {% if parameters['class'] is defined %}
+        {% set class = parameters['class'] %}
+    {% endif %}
+
+    {% if parameters['placeholder'] is defined %}
+        {% set placeholder = parameters['placeholder'] %}        
+    {% endif %}
+
+    {% if parameters['model'] is defined %}
+        {% set model = parameters['model'] %}
+    {% endif %}
+
+    {% if placeholder %}
+        <label>{{placeholder}}</label>
+    {% endif %}
+    <input 
+    type="{{type}}" 
+    class="{{class}}"
+    {% if placeholder %}
+        placeholder="{{placeholder}}" 
+    {% endif %}
+    {% if model is defined %}
+        ng-model="{{model}}"
+    {% endif %}>
+{% endmacro %}
+
+{% macro select(type = null,parameters = {}) %}
+    {% set class = 'form-control' %}
+    {% set type = 'text' %}
+
+    {% if parameters['class'] is defined %}
+        {% set class = parameters['class'] %}
+    {% endif %}
+
+    {% if parameters['placeholder'] is defined %}
+        {% set placeholder = parameters['placeholder'] %}        
+    {% endif %}
+
+    {% if parameters['model'] is defined %}
+        {% set model = parameters['model'] %}
+    {% endif %}
+
+    {% if parameters['items'] is defined %}
+        {% set items = parameters['items'] %}
+    {% endif %}
+
+    {% if placeholder %}
+        <label>{{placeholder}}</label>
+    {% endif %}
+    <select class="{{class}}"
+        {% if model is defined %}
+            ng-model="{{model}}"
+        {% endif %}>
+        {% if items is defined %}
+            <option value="">Seleccione...</option>
+            {% for item in items %}
+                <option value="{{item.value}}">{{item.name}}</option>
+            {% endfor %}
+        {% endif %}
+    </select>
+{% endmacro %}
+
+
+{% macro filters_generate(colspan = null,parameters = {}) %}
+    <div class="row">
+        {% for row in parameters %}
+            {% set colspan = 3 %}
+            {% if row.colspan is defined %}
+                {% set colspan = row.colspan %}
+            {% endif %}
+
+            <div class="col-sm-{{colspan}}">
+                {% set class = 'form-control' %}
+                {% set type = 'text' %}
+                {% set tag = "input" %}
+
+                {% if row.class is defined %}
+                    {% set class = row.class %}
+                {% endif %}
+
+                {% if row.placeholder is defined %}
+                    {% set placeholder = row.placeholder %}        
+                {% endif %}
+
+                {% if row.ng_model is defined %}
+                    {% set ng_model = row.ng_model %}
+                {% endif %}
+
+                {% if row.ng_options is defined %}
+                    {% set ng_options = row.ng_options %}
+                {% endif %}
+
+                {% if row.ng_change is defined %}
+                    {% set ng_change = row.ng_change %}
+                {% endif %}
+
+                {% if row.ng_controller is defined %}
+                    {% set ng_controller = row.ng_controller %}
+                {% endif %}
+                
+                {% if row.items is defined %}
+                    {% set items = row.items %}
+                {% endif %}
+
+                {% if placeholder %}
+                    <label>{{placeholder}}</label>
+                {% endif %}
+                
+                {% if row.tag is defined %}
+                    {% set tag = row.tag %}
+                {% endif %}                
+
+                {% if tag == "input" %}
+                    <input 
+                        type="{{type}}" 
+                        class="{{class}} filters"
+                        {% if placeholder %}
+                            placeholder="{{placeholder}}" 
+                        {% endif %}
+                        
+                        {% if row.ng_init is defined %}
+                            ng-init="{{row.ng_init}}"
+                        {% endif %}
+
+                        {% if ng_controller is defined %}
+                            ng-controller="{{ng_controller}}"
+                        {% endif %}
+                        
+                        {% if ng_model is defined %}
+                            ng-model="{{ng_model}}"
+                        {% endif %}
+                        
+                        {% if ng_options is defined %}
+                            ng-options="{{ng_options}}"
+                        {% endif %}
+                        
+                        {% if ng_change is defined %}
+                            ng-change="{{ng_change}}"
+                        {% endif %}
+                        >
+                {% elseif tag == "select" %}
+                    <select class="{{class}}"
+                        {% if ng_controller is defined %}
+                            ng-controller="{{ng_controller|raw}}"
+                        {% endif %}
+                        {% if ng_model is defined %}
+                            ng-model="{{ng_model|raw}}"
+                        {% endif %}
+                        {% if ng_options is defined %}
+                            ng-options="{{ng_options|raw}}"
+                        {% endif %}
+                        {% if ng_change is defined %}
+                            ng-change="{{ng_change|raw}}"
+                        {% endif %}
+                        >
+
+                        {% if items is defined %}
+                            <option value="">Seleccione...</option>
+                            {% for item in items %}
+                                <option value="{{item.value}}">{{item.name}}</option>
+                            {% endfor %}
+                        {% endif %}
+
+                    </select>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

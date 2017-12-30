@@ -1,0 +1,190 @@
+{% macro list_action(action = null,parameters = {}) %}
+    {% set class = 'btn btn-default btn-flat btn-xs' %}
+    {% set role = null %}
+    {% set type = 'button' %}
+
+    {% if parameters['class'] is defined %}
+        {% set class = parameters['class'] %}
+    {% endif %}
+
+    {% if parameters['role'] is defined %}
+        {% set role = parameters['role'] %}
+    {% endif %}
+
+    {% if parameters['title'] is defined %}
+        {% set title = parameters['title'] %}        
+    {% endif %}
+
+    {% if parameters['icon'] is defined %}
+        {% set icon = parameters['icon'] %}
+    {% endif %}
+
+    {% if is_granted(role) %}    
+        <button 
+            type="{{type}}"
+            class="{{class}}" 
+            {% if action %}
+                ng-click="{{action}}"
+            {% endif %}
+            {% if title is defined %}
+                data-toggle="tooltip"
+                title="{{title}}"
+            {% endif %}>
+
+            {% if icon is defined %}
+                <i class="{{icon}}"></i>
+            {% endif %}
+        </button>    
+    {% endif %}
+{% endmacro %}
+
+{% macro list_action_generate(parameters = {}) %}
+    {% for row in parameters %}
+        {% set class = 'btn btn-default btn-flat btn-xs' %}
+        {% set role = null %}
+        {% set type = 'button' %}
+
+        {% if row.class is defined %}
+            {% set class = row.class %}
+        {% endif %}
+
+        {% if row.role is defined %}
+            {% set role = row.role %}
+        {% endif %}
+
+        {% if row.title is defined %}
+            {% set title = row.title %}        
+        {% endif %}
+
+        {% if row.icon is defined %}
+            {% set icon = row.icon %}
+        {% endif %}
+
+        {% if is_granted(role) %}    
+            <button 
+                type="{{type}}"
+                class="{{class}}" 
+                {% if row.action is defined %}
+                    ng-click="{{row.action}}"
+                {% endif %}
+                {% if title is defined %}
+                    data-toggle="tooltip"
+                    title="{{title}}"
+                {% endif %}>
+
+                {% if icon is defined %}
+                    <i class="{{icon}}"></i>
+                {% endif %}
+            </button>    
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro list_action_default(roles = {}) %}
+    <td data-title="'Acciones'" width="8%" class="center">
+        {% if roles.edit is defined %}
+            {% if is_granted(roles.edit) %}
+                <button 
+                    type="button"
+                    class="btn btn-primary btn-flat btn-xs"
+                    ng-click="table.edit(row.id)"
+                    data-toggle="tooltip"
+                    title="Editar">
+                    <i class="fa fa-pencil"></i>
+                </button>    
+            {% endif %}
+        {% endif %}
+        {% if roles.delete is defined %}
+            {% if is_granted(roles.delete) %}
+                <button 
+                    type="button"
+                    class="btn btn-danger btn-flat btn-xs"
+                    ng-click="table.delete(row.id)"
+                    data-toggle="tooltip"
+                    title="Eliminar">
+                    <i class="fa fa-trash"></i>
+                </button> 
+            {% endif %}
+        {% endif %}
+    </td>
+{% endmacro %}
+
+{% macro filter_collapsed() %}
+    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Ver mas" style="margin-right: 5px;">
+        <i class="fa fa-plus"></i>        
+    </button>
+{% endmacro %}
+
+{% macro filter_remove() %}
+    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remover panel" style="margin-right: 5px;">
+        <i class="fa fa-times"></i>
+    </button>    
+{% endmacro %}
+
+{% macro filter_refresh(parameters = {}) %}
+    <button 
+        type="button" 
+        class="btn btn-box-tool" 
+        data-toggle="tooltip" 
+        title="Refrescar" 
+        style="margin-right: 5px;" 
+        {% if parameters['ng_click'] is defined %}
+            ng-click="{{parameters['ng_click']}}"
+        {% else %}
+            ng-click="table.refresh()"
+        {% endif %}
+        >
+        <i class="fa fa-refresh"></i>        
+    </button>
+{% endmacro %}
+
+{% macro filter_clear(parameters = {}) %}
+    <button 
+        type="button" 
+        class="btn btn-box-tool" 
+        data-toggle="tooltip" 
+        title="Limpiar" 
+        style="margin-right: 5px;"
+        {% if parameters['ng_click'] is defined %}
+            ng-click="{{parameters['ng_click']}}"
+        {% else %}
+            ng-click="table.clear()"
+        {% endif %}
+            >
+        <i class="fa fa-eraser"></i>        
+    </button>
+{% endmacro %}
+
+
+{% macro ng_button(parameters = {}) %}
+    {% set class = 'btn btn-default' %}
+    
+    {% if parameters['class'] is defined %}
+        {% set class = parameters['class'] %}
+    {% endif %}
+
+    <button 
+        class="{{class}}"
+        style="margin-left: 5px;"
+        {% if parameters['title_tooltip'] is defined %}
+            data-toggle="tooltip"        
+            title="{{parameters['title_tooltip']}}"
+        {% endif %}
+        
+        {% if parameters['ng_controller'] is defined %}
+            ng-controller="{{parameters['ng_controller']}}"
+        {% endif %}
+
+        {% if parameters['ng_click'] is defined %}
+            ng-click="{{parameters['ng_click']}}"
+        {% endif %}
+        >
+        {% if parameters['icon'] is defined %}
+            <i class="fa {{ parameters['icon'] }}"></i>&nbsp;
+        {% endif %}
+
+        {% if parameters['title'] is defined %}
+            <b>{{parameters['title']|trans({},'tconin')}}</b>
+        {% endif %}
+    </button>
+{% endmacro %}
