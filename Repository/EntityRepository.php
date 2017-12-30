@@ -13,7 +13,7 @@ namespace Atechnologies\PaginatorBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
-use AppBundle\Repository\Core\Paginator;
+use Atechnologies\PaginatorBundle\Model\Paginator;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\SecurityContext;
