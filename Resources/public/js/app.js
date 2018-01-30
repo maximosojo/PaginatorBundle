@@ -10,7 +10,7 @@
 
 'use strict';
 
-var app = angular.module('atechnologies', [])
+var app = angular.module('atechnologies_paginator', [])
 
 .controller('PaginatorController', function($scope, $rootScope, NgTableParams, $http, $timeout, modalManager, httpMethod){
     $scope.model = {};
