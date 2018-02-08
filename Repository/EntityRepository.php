@@ -40,12 +40,7 @@ class EntityRepository extends Base implements ContainerAwareInterface
      */
     public function getPaginator(QueryBuilder $queryBuilder)
     {   
-        global $kernel;
-        if ($kernel instanceOf \AppCache) {
-            $kernel = $kernel->getKernel();
-        }
-        $container = $kernel->getContainer();
-        $this->setContainer($container);
+        $this->preSetContainer();
 
         $request = $this->container->get('request_stack')->getCurrentRequest();
         if($request){
@@ -75,17 +70,59 @@ class EntityRepository extends Base implements ContainerAwareInterface
         }
         return $pagerfanta;
     }
-    
-    public function findAllPaginated()
+
+    /**
+     * Retorna un paginador con valores escalares (Sin hidratar)
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @return \
+     */
+    public function getPaginatorScalar(\Doctrine\ORM\QueryBuilder $queryBuilder)
     {
-        return $this->getPaginator($this->getQueryBuilder())
-        ;
+        $this->preSetContainer();
+
+        $request = $this->container->get('request_stack')->getCurrentRequest();        
+        $pagerfanta = new Paginator(new ArrayAdapter($queryBuilder->getQuery()->getScalarResult()));
+        $pagerfanta->setDefaultFormat($this->getFormatPaginator());
+        $pagerfanta->setContainer($this->container);
+        $pagerfanta->setRequest($request);
+        return $pagerfanta;
     }
     
+    /**
+     * @author Máximo Sojo maxsojo13@gmail.com <maxtoan at atechnologies>
+     * @return [type]
+     */
+    public function findAllPaginated()
+    {
+        return $this->getPaginator($this->getQueryBuilder());
+    }
+    
+    /**
+     * @author Máximo Sojo maxsojo13@gmail.com <maxtoan at atechnologies>
+     * @param  SecurityContext
+     */
     public function setSecurityContext(SecurityContext $securityContext) {
         $this->securityContext = $securityContext;
     }
     
+    /**
+     * @author Máximo Sojo maxsojo13@gmail.com <maxtoan at atechnologies>
+     * @return [type]
+     */
+    public function preSetContainer()
+    {
+        global $kernel;
+        if ($kernel instanceOf \AppCache) {
+            $kernel = $kernel->getKernel();
+        }
+        $container = $kernel->getContainer();
+        $this->setContainer($container);
+    }
+    /**
+     * Set container
+     * @author Máximo Sojo maxsojo13@gmail.com <maxtoan at atechnologies>
+     * @param  ContainerInterface|null
+     */
     public function setContainer(ContainerInterface $container = null) {
         $this->container = $container;
     }
@@ -116,22 +153,6 @@ class EntityRepository extends Base implements ContainerAwareInterface
         return $user;
     }
     
-    /**
-     * Retorna un paginador con valores escalares (Sin hidratar)
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
-     * @return \
-     */
-    public function getScalarPaginator(\Doctrine\ORM\QueryBuilder $queryBuilder)
-    {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        
-        $pagerfanta = new Paginator(new ArrayAdapter($queryBuilder->getQuery()->getScalarResult()));
-        $pagerfanta->setDefaultFormat($this->getFormatPaginator());
-        $pagerfanta->setContainer($this->container);
-        $pagerfanta->setRequest($request);
-        return $pagerfanta;
-    }
-    
     public function getSecurityContext()
     {
         if (!$this->container->has('security.context')) {
@@ -151,25 +172,6 @@ class EntityRepository extends Base implements ContainerAwareInterface
         return $this->container->getParameter('format_array');
     }
     
-    public function findForSearch(array $criteria = [], array $orderBy = null)
-    {
-        $criteria = $this->parseCriteria($criteria);
-        
-        $a = $this->getAlies();
-        $qb = $this->getQueryBuilder();
-        $qb
-            ->select($a.".id id")
-            ->addSelect($a.".description ".$a."_description")
-            ;
-        $sqb = $this->createSearchQueryBuilder($qb, $criteria);
-        $sqb->addFieldDescription();
-        $sqb->addQueryField("query",["description"]);
-        
-        $this->applyCriteria($qb, $criteria->toArray());
-        $this->applySorting($qb, $orderBy);
-        $qb->orderBy($a.".description","ASC");
-        return $this->getScalarPaginator($qb);
-    }
     /**
      * @param type $qb
      * @param type $criteria
