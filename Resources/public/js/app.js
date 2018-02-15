@@ -12,7 +12,7 @@
 
 var app = angular.module('atechnologies_paginator', [])
 
-.controller('PaginatorController', function($scope, $rootScope, NgTableParams, $http, $timeout, modalManager, httpMethod){
+.controller('PaginatorController', function($scope, $rootScope, NgTableParams, $http, $timeout){
     $scope.model = {};
     $scope.paginator = null;
     this.apiUrl = null;
