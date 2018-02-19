@@ -25,6 +25,25 @@ var app = angular.module('atechnologies_paginator', ['ngTable'])
     };
 })
 
+.directive('ngLoading', function() {
+    return {
+      restrict: "A",
+      scope: false,
+      link: function(scope, element, attrs) {
+          var loading = '<div class="overlay">'+
+              '<i class="fa fa-refresh fa-spin"></i>'+
+              'Cargando...'+
+            '</div>';
+        var loadingLayer = angular.element("<div class='loading'><p class='blocktext'>"+loading+"</p></div>");
+        element.append(loadingLayer);
+        element.addClass("l-loading-container");
+        scope.$watch(attrs.ngLoading, function(value) {
+          loadingLayer.toggleClass("ng-hide", !value);
+        });
+      }
+    };
+})
+
 .controller('PaginatorController', function($scope, $rootScope, NgTableParams, $http, $timeout){
     $scope.model = {};
     $scope.paginator = null;
@@ -61,9 +80,8 @@ var app = angular.module('atechnologies_paginator', ['ngTable'])
         self.getCurrentUrl();
     };
     
-    $scope.$on("updateList",function(){
-      self.tableParams.reload();
-      self.getCurrentUrl();
+    $scope.$on("refreshPaginator",function(){
+        self.refresh();
     })
 
     this.getCurrentUrl = function (baseUrl) {
@@ -101,8 +119,7 @@ var app = angular.module('atechnologies_paginator', ['ngTable'])
         $timeout(function () {
           clearFilters();
         });
-    };
-    
+    };    
 
     $scope.initWatch = function (modelName) {
         modelName = modelName.replace(".", "__");
@@ -134,4 +151,11 @@ var app = angular.module('atechnologies_paginator', ['ngTable'])
 
         });
     };
+
+    this.ngHref = function(url,parameters){
+        if (typeof parameters == 'undefined') {
+          var parameters = {};
+        }
+        document.location.href = Routing.generate(url,parameters, true);
+    }
 })

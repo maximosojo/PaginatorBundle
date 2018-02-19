@@ -5,6 +5,29 @@
 {% set _parent = _self %}
 
 {% block content %}
+	<style type="text/css">
+		.l-loading-container {
+            position: relative;
+        }
+
+        .l-loading-container .loading:before, .l-loading-container .loading:after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            min-height: 50px;
+            min-width: 50px;
+            cursor: wait;
+            z-index: 9999;
+        }
+
+        .l-loading-container .loading:before {
+            background-color: white;
+            opacity: 0.5;
+        }
+	</style>
 	<div ng-cloak ng-app="atechnologies_paginator" ng-controller="PaginatorController as paginatorCtrl">
 		<div {% block ng_parameters '' %}>
 			<script type="text/ng-template" id="customPager.html">
