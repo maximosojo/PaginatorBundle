@@ -10,7 +10,20 @@
 
 'use strict';
 
-var app = angular.module('atechnologies_paginator', [])
+var app = angular.module('atechnologies_paginator', ['ngTable'])
+
+.config(['$interpolateProvider', function ($interpolateProvider) {
+    $interpolateProvider.startSymbol('{$');
+    $interpolateProvider.endSymbol('$}');
+}])
+
+.directive('apiDataUrl',function ($rootScope){
+    return {
+      link: function(scope, element, attrs){
+            $rootScope.apiDataUrl = attrs.apiDataUrl;
+        }
+    };
+})
 
 .controller('PaginatorController', function($scope, $rootScope, NgTableParams, $http, $timeout){
     $scope.model = {};
