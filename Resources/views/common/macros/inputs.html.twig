@@ -156,6 +156,9 @@
                         {% if ng_change is defined %}
                             ng-change="{{ng_change|raw}}"
                         {% endif %}
+                        {% if row.ng_init is defined %}
+                            ng-init="{{row.ng_init}}"
+                        {% endif %}
                         >
 
                         {% if items is defined %}
